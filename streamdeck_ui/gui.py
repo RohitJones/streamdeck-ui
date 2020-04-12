@@ -1,4 +1,5 @@
 """Defines the QT powered interface for configuring Stream Decks"""
+import argparse
 import os
 import sys
 from functools import partial
@@ -239,6 +240,10 @@ def queue_text_change(ui, text: str) -> None:
 
 
 def start(_exit: bool = False) -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--silent", help="start to tray", action="store_true")
+    args = parser.parse_args()
+
     app = QApplication(sys.argv)
 
     logo = QIcon(LOGO)
@@ -280,7 +285,8 @@ def start(_exit: bool = False) -> None:
 
     api.render()
     tray.show()
-    main_window.show()
+    if not args.silent:
+        main_window.show()
     if _exit:
         return
     else:
